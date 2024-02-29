@@ -10,6 +10,8 @@ services:
       POSTGRES_DB: test_db
     ports:
       - "5432:5432"
+    networks:
+      - shared-network
     volumes:
       - pg_data:/var/lib/postgresql/data/
       - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
@@ -22,6 +24,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: "./nginx"
+    networks:
+      - shared-network
     ports:
       - "80:80"
       - "443:443"
@@ -33,6 +37,8 @@ services:
       context: './api'
     depends_on:
       - postgres
+    networks:
+      - shared-network
     volumes:
       - /api/node_modules
       - ./api:/api
@@ -45,11 +51,16 @@ services:
       context: "./client"
     depends_on:
       - api # todo: might not be necessary
+    networks:
+      - shared-network
     volumes:
       - /client/node_modules
       - ./client:/app
     ports:
       - "3000:3000"
+
+networks:
+  shared-network:
 
 volumes:
   pg_data:
