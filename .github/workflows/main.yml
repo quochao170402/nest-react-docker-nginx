@@ -41,7 +41,7 @@ jobs:
       run:
         working-directory: '/home/quochao/docker-nestjs-react-postgres'
     steps:
-      - name: Pull latest images
-        run: docker compose pull
+      # - name: Pull latest images
+      #   run: docker compose pull
       - name: Build and run
         run: docker compose up -d --build
